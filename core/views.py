@@ -1,6 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.request import HttpRequest
+from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
@@ -72,7 +73,7 @@ def me(request: HttpRequest):
     user = User.objects.get(id=request.user.id)
 
     if request.method == 'GET':
-        return Response(UserSerializer(user).data)
+        return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
 
     if request.method == 'PUT':
         data = request.data
@@ -82,11 +83,12 @@ def me(request: HttpRequest):
         user.phone = data['phone']
         user.first_name = data['first_name']
         user.last_name = data['last_name']
-        user.created_by = data['created_by']
         user.modified_by = data['modified_by']
         user.save()
-        return Response(UserSerializer(user).data)
+        return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
 
     if request.method == 'DELETE':
-        pass
+        user.delete()
+        Token.objects.get(user=user).delete()
+        return Response(f'{user} deleted successfully', status=status.HTTP_204_NO_CONTENT)
 
