@@ -4,13 +4,15 @@ from rest_framework.request import HttpRequest
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.authtoken.models import Token
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import AllowAny
+from .authentication import MyAuthentication
 from rest_framework.decorators import permission_classes, authentication_classes
 from . models import User
 from . serializers import UserRegistrationSerializer, UserSerializer
 
 # Create your views here.
 @api_view(http_method_names=['post'])
+@permission_classes([AllowAny])
 def register_user(request):
     """ 
     Registers the user and returns the user credentials
@@ -31,10 +33,11 @@ def register_user(request):
             user.set_password(data['password'])
             user.save()
             Token.objects.create(user=user)
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 @api_view(http_method_names=['post'])
+@permission_classes([AllowAny])
 def login_user(request):
     """ 
     Login the user and returns the user credentials
@@ -57,19 +60,25 @@ def login_user(request):
             'user': UserSerializer(user).data,
             'token': user_token.key
         }
-        return Response(user_credentials)
+        return Response(user_credentials, status=status.HTTP_202_ACCEPTED)
 
 
 @api_view()
+@permission_classes([AllowAny])
 def user_list(request):
+    """ Returns all the users """
     queryset = User.objects.all()
     serializer = UserSerializer(queryset, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(http_method_names=['get', 'put', 'delete'])
-@authentication_classes([TokenAuthentication])
+@authentication_classes([MyAuthentication])
 def me(request: HttpRequest):
+    """ 
+    Returns the current user etails.
+    This endpoint can be used to update or delete the current user
+    """
     user = User.objects.get(id=request.user.id)
 
     if request.method == 'GET':
@@ -88,7 +97,7 @@ def me(request: HttpRequest):
         return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
 
     if request.method == 'DELETE':
-        user.delete()
         Token.objects.get(user=user).delete()
-        return Response(f'{user} deleted successfully', status=status.HTTP_204_NO_CONTENT)
+        user.delete()
+        return Response(f'deleted successfully', status=status.HTTP_204_NO_CONTENT)
 
