@@ -155,14 +155,14 @@ LOGGING = {
             "()": structlog.stdlib.ProcessorFormatter,
             "processor": structlog.processors.JSONRenderer(),
         },
-        "plain_console": {
-            "()": structlog.stdlib.ProcessorFormatter,
-            "processor": structlog.dev.ConsoleRenderer(),
-        },
-        "key_value": {
-            "()": structlog.stdlib.ProcessorFormatter,
-            "processor": structlog.processors.KeyValueRenderer(key_order=['timestamp', 'level', 'event', 'logger']),
-        },
+        # "plain_console": {
+        #     "()": structlog.stdlib.ProcessorFormatter,
+        #     "processor": structlog.dev.ConsoleRenderer(),
+        # },
+        # "key_value": {
+        #     "()": structlog.stdlib.ProcessorFormatter,
+        #     "processor": structlog.processors.KeyValueRenderer(key_order=['timestamp', 'level', 'event', 'logger']),
+        # },
     },
     "handlers": {
         "console": {

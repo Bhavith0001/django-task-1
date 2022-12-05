@@ -107,7 +107,7 @@ def current_user(request: HttpRequest):
     except User.DoesNotExist:
             raise ValidationError({'error': 'user does not exist'})
 
-    logger.info(f'USER DATA --> {user}')
+    logger.info(f'USER --> {user}')
     
     if request.method == 'GET':
         return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
