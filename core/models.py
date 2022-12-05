@@ -8,6 +8,7 @@ class User(AbstractUser):
     modified = models.DateTimeField(auto_now=True)
     created_by = models.CharField(max_length=200)
     modified_by = models.CharField(max_length=200)
+    premium = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name', 'phone']

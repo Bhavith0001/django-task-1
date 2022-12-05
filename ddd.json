@@ -1,0 +1,31 @@
+{
+    "request": "GET /auth/me/",
+    "user_agent": "PostmanRuntime/7.29.2",
+    "event": "request_started",
+    "user_id": null,
+    "request_id": "6196b8a1-b25e-4406-91fe-b4640341f20b",
+    "ip": "127.0.0.1",
+    "timestamp": "2022-12-05T09:16:17.596344Z",
+    "logger": "django_structlog.middlewares.request",
+    "level": "info"
+}    
+{
+    "event": "USER DATA --> user1",
+    "user_id": null,
+    "request_id": "6196b8a1-b25e-4406-91fe-b4640341f20b",
+    "ip": "127.0.0.1",
+    "timestamp": "2022-12-05T09:16:17.653301Z",
+    "logger": "core.views",
+    "level": "info"
+}
+{
+    "code": 200,
+    "request": "GET /auth/me/",
+    "event": "request_finished",
+    "user_id": 8,
+    "request_id": "6196b8a1-b25e-4406-91fe-b4640341f20b",
+    "ip": "127.0.0.1",
+    "timestamp": "2022-12-05T09:16:17.654797Z",
+    "logger": "django_structlog.middlewares.request",
+    "level": "info"
+}
