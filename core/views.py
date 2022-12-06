@@ -4,7 +4,7 @@ from rest_framework.request import HttpRequest
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAdminUser
 from .authentication import MyAuthentication
 from rest_framework.decorators import permission_classes, authentication_classes
 from . models import User
@@ -86,7 +86,7 @@ def login_user(request):
 
 
 @api_view()
-@permission_classes([AllowAny])
+@permission_classes([IsAdminUser])
 def user_list(request):
     """ Returns all the users """
     queryset = User.objects.all()
